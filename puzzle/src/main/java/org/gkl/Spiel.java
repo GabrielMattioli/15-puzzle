@@ -24,6 +24,7 @@ public class Spiel extends Application {
     int index;
     private Button buttonLeer;
 
+    @SuppressWarnings("incomplete-switch")
     @Override
     public void start(Stage primaryStage) {
 
@@ -36,6 +37,7 @@ public class Spiel extends Application {
         BorderPane borderPane = new BorderPane();
 
         // Bereiche der borderPane organisieren
+        // top
         borderPane.setTop(titelSpiel);
         borderPane.setAlignment(titelSpiel, Pos.CENTER);
         // center
@@ -112,6 +114,13 @@ public class Spiel extends Application {
     private boolean buttonNeben(Button buttonZahl, Button buttonLeer) {
         int indexZahl = buttonZahl.getParent().getChildrenUnmodifiable().indexOf(buttonZahl);
         int indexLeer = buttonLeer.getParent().getChildrenUnmodifiable().indexOf(buttonLeer);
-        return Math.abs(indexZahl - indexLeer) == 1 || Math.abs(indexZahl - indexLeer) == gridGroesse;
+        int reiheIndexZahl = indexZahl / gridGroesse;
+        int spalteIndexZahl = indexZahl % gridGroesse;
+        int reiheIndexLeer = indexLeer / gridGroesse;
+        int spalteIndexLeer = indexLeer % gridGroesse;
+        boolean selbeReihe = reiheIndexZahl == reiheIndexLeer && Math.abs(indexZahl - indexLeer) == 1;
+        boolean selbeSpalte = spalteIndexZahl == spalteIndexLeer && Math.abs(indexZahl - indexLeer) == 1;
+        // Liefert true, wenn die Zahlen neben einander und in die selbe Spalte sind
+        return selbeReihe || selbeSpalte || Math.abs(indexZahl - indexLeer) == gridGroesse;
     }
 }
