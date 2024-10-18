@@ -20,13 +20,13 @@ import javafx.stage.Stage;
 
 public class Spiel extends Application {
 
-    public static final int gridGroesse = 3;
+    public static int gridGroesse = 3; // Standart auf 3 setzen
     private static final int quadratGroesse = 100;
     Button button;
     List<Button> buttons = new ArrayList<>();
     int index;
     private Button buttonLeer;
-    private int aktuelleIndex = 0;
+    private int aktuelleIndex;
     GridPane gridPane = new GridPane();
 
     @Override
@@ -54,32 +54,16 @@ public class Spiel extends Application {
         borderPane.setBottom(tastenkombinationen);
         BorderPane.setAlignment(tastenkombinationen, Pos.CENTER);
 
+        gridFuellen(gridGroesse);
         // Erstellung der Buttons
-        for (int i = 0; i < gridGroesse * gridGroesse; i++) {
-            Button button = new Button(Integer.toString(i + 1));
-            // Button selbst soll so groß sein
-            button.setPrefWidth(quadratGroesse);
-            button.setPrefHeight(quadratGroesse);
-            // Zahl des Buttons soll so groß sein
-            button.setStyle("-fx-font-size: 20px;");
+        // Buttons in GridPane einfügen
 
-            button.setOnAction(e -> buttonBewegen(button));// Eventlistener beim Klicken
-            buttons.add(button);
-        }
-
-        // Buttons random organisieren
-        Collections.shuffle(buttons);
-
-        // Buttons ins gridPane einfügen
-        buttonsEinfuegen();
-
-        buttonLeer = buttons.get(0);
-        buttonLeer.setText("");
-
+        // Puzzle mischen
         puzzleMischen();
 
         // Das Fenster muss 640x480 Groß sein
         Scene scene = new Scene(borderPane, 640, 480);
+        scene.setOnKeyPressed(this::handleKeyPress);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Schiebe Puzzle");
         primaryStage.show();
@@ -90,19 +74,19 @@ public class Spiel extends Application {
     }
 
     @SuppressWarnings("incomplete-switch")
-    private void handleKeyPressed(KeyEvent event) {
+    private void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
-                nummerTauschen(0, -1);
-                break;
-            case DOWN:
                 nummerTauschen(0, 1);
                 break;
+            case DOWN:
+                nummerTauschen(0, -1);
+                break;
             case LEFT:
-                nummerTauschen(-1, 0);
+                nummerTauschen(1, 0);
                 break;
             case RIGHT:
-                nummerTauschen(1, 0);
+                nummerTauschen(-1, 0);
                 break;
             case ENTER:
                 puzzleMischen();
@@ -110,13 +94,52 @@ public class Spiel extends Application {
                 buttonsEinfuegen();
                 gridPane.requestFocus();
                 break;
+            case DIGIT3:
+                gridFuellen(3);
+                puzzleMischen();
+                break;
+            case DIGIT4:
+                gridFuellen(4);
+                puzzleMischen();
+                break;
+            case DIGIT5:
+                gridFuellen(5);
+                puzzleMischen();
+                break;
+            case DIGIT6:
+                gridFuellen(6);
+                puzzleMischen();
+                break;
+            case DIGIT7:
+                gridFuellen(7);
+                puzzleMischen();
+                break;
+            case DIGIT8:
+                gridFuellen(8);
+                puzzleMischen();
+                break;
             case ESCAPE:
                 Platform.exit();
                 break;
         }
     }
 
-    // Buttons ins GridPane einfügen
+    // Erstellt Buttons und fügt sie in die ArrayList "buttons" ein
+    private void buttonsErstellen() {
+        buttons.clear();
+        for (int i = 0; i < gridGroesse * gridGroesse; i++) {
+            Button button = new Button(Integer.toString(i + 1));
+            // button soll so groß sein
+            button.setPrefWidth(quadratGroesse);
+            button.setPrefHeight(quadratGroesse);
+            // Zahl des Buttons soll 20px sein
+            button.setStyle("-fx-font-size: 20px;");
+            button.setOnAction(e -> buttonBewegen(button));
+            buttons.add(button);
+        }
+    }
+
+    // Buttons in das GridPane einfügen
     private void buttonsEinfuegen() {
         for (int reiheAkt = 0; reiheAkt < gridGroesse; reiheAkt++) {
             for (int spalteAkt = 0; spalteAkt < gridGroesse; spalteAkt++) {
@@ -140,20 +163,31 @@ public class Spiel extends Application {
         int indexLeer = buttonLeer.getParent().getChildrenUnmodifiable().indexOf(buttonLeer);
         int reiheIndexZahl = indexZahl / gridGroesse;
         int spalteIndexZahl = indexZahl % gridGroesse;
+
         int reiheIndexLeer = indexLeer / gridGroesse;
         int spalteIndexLeer = indexLeer % gridGroesse;
+
         boolean selbeReihe = reiheIndexZahl == reiheIndexLeer && Math.abs(indexZahl - indexLeer) == 1;
         boolean selbeSpalte = spalteIndexZahl == spalteIndexLeer && Math.abs(indexZahl - indexLeer) == 1;
         // Liefert true, wenn die Zahlen neben einander und in die selbe Spalte sind
         return selbeReihe || selbeSpalte || Math.abs(indexZahl - indexLeer) == gridGroesse;
     }
 
-    private void nummerTauschen(int dx, int dy) {
-        int currentRow = aktuelleIndex / gridGroesse;
-        int currentCol = aktuelleIndex % gridGroesse;
+    // Ändert die Position des leeren Buttons
+    private void nummerTauschen(int xSpalte, int xReihe) {
 
-        int neueReihe = currentRow + dy;
-        int neueSpalte = currentCol + dx;
+        // Neue Indes des leeren Button finden
+        for (int i = 0; i < buttons.size(); i++) {
+            if (buttons.get(i).getText().isEmpty()) {
+                aktuelleIndex = i;
+                break;
+            }
+        }
+        int aktuelleReihe = aktuelleIndex / gridGroesse;
+        int aktuelleSpalte = aktuelleIndex % gridGroesse;
+
+        int neueReihe = aktuelleReihe + xReihe;
+        int neueSpalte = aktuelleSpalte + xSpalte;
 
         // prüft ob die neue Position innerhalb des Grids liegt
         if (neueReihe >= 0 && neueReihe < gridGroesse && neueSpalte >= 0 && neueSpalte < gridGroesse) {
@@ -174,8 +208,10 @@ public class Spiel extends Application {
 
     public void puzzleMischen() {
         ArrayList<Integer> letzteRichtungen = new ArrayList<>();
+        letzteRichtungen.clear();
 
         for (int bewegungen = 0; bewegungen < 60; bewegungen++) {
+
             // 1=oben, 2=unten, 3=links, 4=rechts
             int randomRichtung = (int) (Math.random() * (4) + 1);
 
@@ -195,5 +231,15 @@ public class Spiel extends Application {
                     break;
             }
         }
+    }
+
+    // Ändert die Größe des Grids
+    private void gridFuellen(int groesse) {
+        gridPane.getChildren().clear();
+        gridGroesse = groesse;
+        buttonsErstellen();
+        buttonsEinfuegen();
+        buttonLeer = buttons.get(0);
+        buttonLeer.setText("");
     }
 }
