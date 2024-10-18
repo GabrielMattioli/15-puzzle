@@ -1,6 +1,7 @@
 package org.gkl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.application.Application;
@@ -9,11 +10,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Spiel extends Application {
@@ -59,6 +58,9 @@ public class Spiel extends Application {
             buttons.add(button);
         }
 
+        // Buttons random organisieren
+        Collections.shuffle(buttons);
+
         // Buttons ins gridPane einfügen
         for (int reiheAkt = 0; reiheAkt < gridGroesse; reiheAkt++) {
             for (int spalteAkt = 0; spalteAkt < gridGroesse; spalteAkt++) {
@@ -70,10 +72,26 @@ public class Spiel extends Application {
         buttonLeer = buttons.get(0);
         buttonLeer.setText("");
 
-        gridPane.requestFocus();
-        // Beim druclen der Pfeile, werden die Buttons nicht selektiert
-        gridPane.setFocusTraversable(true);
-        borderPane.setFocusTraversable(true);
+        gridPane.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP:
+                    buttonBewegen(button);
+                    break;
+                case DOWN:
+                    buttonBewegen(button);
+                    break;
+                case LEFT:
+                    buttonBewegen(button);
+                    break;
+                case RIGHT:
+                    buttonBewegen(button);
+                    break;
+                case ESCAPE:
+                    Platform.exit();
+                    break;
+            }
+
+        });
 
         // Das Fenster muss 640x480 Groß sein
         Scene scene = new Scene(borderPane, 640, 480);
