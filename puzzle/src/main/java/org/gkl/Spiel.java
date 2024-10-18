@@ -30,6 +30,7 @@ public class Spiel extends Application {
     GridPane gridPane = new GridPane();
     String reihenfolgeRichtig;
     String reigenfolgePruefen;
+    int zugeZaehler;
 
     @Override
     public void start(Stage primaryStage) {
@@ -192,6 +193,8 @@ public class Spiel extends Application {
             String tempText = ausgewaehlterButton.getText();
             ausgewaehlterButton.setText(zielButton.getText());
             zielButton.setText(tempText);
+            // Addiert 1 zu der Zähler
+            zugeZaehler++;
 
             // Aktualisiert die Position des leeren Buttons
             aktuelleIndex = neuerIndex;
@@ -221,6 +224,7 @@ public class Spiel extends Application {
                     break;
             }
         }
+        zugeZaehler = 0;
     }
 
     // Ändert die Größe des Grids
@@ -259,7 +263,7 @@ public class Spiel extends Application {
         if (gewinnPruefen()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Geschafft!");
-            alert.setHeaderText("Züge..., Zeit...");
+            alert.setHeaderText("Züge: " + zugeZaehler + ", Zeit: " + letzteZeit);
             alert.setContentText("Sie haben das Puzzle geschafft!");
             alert.showAndWait();
         }
