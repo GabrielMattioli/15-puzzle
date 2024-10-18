@@ -1,9 +1,12 @@
 package org.gkl;
 
+import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -31,6 +34,8 @@ public class Spiel extends Application {
     String reihenfolgeRichtig;
     String reigenfolgePruefen;
     int zugeZaehler;
+    int sekunden = 0;
+    private Timeline timeline;
 
     @Override
     public void start(Stage primaryStage) {
@@ -38,6 +43,11 @@ public class Spiel extends Application {
         Label titelSpiel = new Label("GKL Puzzle");
         titelSpiel.setTextFill(Color.RED);
         titelSpiel.setFont(new Font(22));
+        // Erstellung der Zeit Elementen
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            sekunden++;
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
         // Erstellung von Panes
         BorderPane borderPane = new BorderPane();
         // top
@@ -267,5 +277,13 @@ public class Spiel extends Application {
             alert.setContentText("Sie haben das Puzzle geschafft!");
             alert.showAndWait();
         }
+    }
+
+    private void startTimer() {
+        timeline.play();
+    }
+
+    private void stopTimer() {
+        timeline.stop();
     }
 }
