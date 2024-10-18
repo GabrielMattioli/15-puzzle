@@ -17,15 +17,16 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Spiel extends Application {
-    public static int gridGroesse = 3; // Standart auf 3 setzen
+    public static int gridGroesse = 4; // Standart auf 3 setzen
     private static int quadratGroesse = 100;
-    Button button;
     ArrayList<Button> buttons = new ArrayList<>();
     int index;
     private Button buttonLeer;
@@ -33,43 +34,49 @@ public class Spiel extends Application {
     GridPane gridPane = new GridPane();
     String reihenfolgeRichtig;
     String reigenfolgePruefen;
-    int zugeZaehler;
+    int zuegeZaehler;
     int sekunden = 0;
     private Timeline timeline;
+    BorderPane borderPane = new BorderPane();
+    Scene scene = new Scene(borderPane, 640, 480);
 
     @Override
     public void start(Stage primaryStage) {
         // Erstellung von Elementen
         Label titelSpiel = new Label("GKL Puzzle");
-        titelSpiel.setTextFill(Color.RED);
-        titelSpiel.setFont(new Font(22));
+        titelSpiel.setTextFill(Color.web("#AA0000"));
+        titelSpiel.setFont(new Font("Elephant", 22));
         // Erstellung der Zeit Elementen
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             sekunden++;
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
-        // Erstellung von Panes
-        BorderPane borderPane = new BorderPane();
-        // top
+        // topPane
         borderPane.setTop(titelSpiel);
-        borderPane.setAlignment(titelSpiel, Pos.CENTER);
-        // center
+        BorderPane.setAlignment(titelSpiel, Pos.CENTER);
+        // centerPane
         borderPane.setCenter(gridPane);
         gridPane.setAlignment(Pos.CENTER);
-        // bottom
+        // bottomPane
         BorderPane.setAlignment(gridPane, Pos.CENTER);
-        Text tastenkombinationen = new Text(" [ENTER] = Mischen   [3]..[8]   [ESC] = Beenden");
-        tastenkombinationen.setFont(new Font(20));
-        tastenkombinationen.setFill(Color.RED);
-        borderPane.setBottom(tastenkombinationen);
+        Label tastenkombinationen = new Label(" [ENTER] = Mischen   [3]..[8]   [ESC] = Beenden");
+        tastenkombinationen.setFont(new Font("Elephant", 20));
+        tastenkombinationen.setTextFill(Color.web("#AA0000"));
+        // Rectangle für die Hintergrundfarbe
+        Rectangle hintergrundBottomPane = new Rectangle();
+        hintergrundBottomPane.setFill(Color.web("#AAAAAA"));
+        hintergrundBottomPane.widthProperty().bind(borderPane.widthProperty());
+        hintergrundBottomPane.heightProperty().bind(tastenkombinationen.heightProperty());
+
+        StackPane bottomPane = new StackPane();
+        bottomPane.getChildren().addAll(hintergrundBottomPane, tastenkombinationen);
+
+        borderPane.setBottom(bottomPane);
+
         BorderPane.setAlignment(tastenkombinationen, Pos.CENTER);
         gridFuellen(gridGroesse);
-        // Erstellung der Buttons
-        // Buttons in GridPane einfügen
-        // Puzzle mischen
-        puzzleMischen();
-        // Das Fenster muss immer 640x480 Groß sein
-        Scene scene = new Scene(borderPane, 640, 480);
+        // Setzt die Hintergrundfarbe Schwarz
+        borderPane.setStyle("-fx-background-color: #000000;");
         scene.setOnKeyPressed(this::handleKeyPress);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Schiebe Puzzle");
@@ -138,12 +145,10 @@ public class Spiel extends Application {
         buttons.clear();
         for (int i = 0; i < gridGroesse * gridGroesse; i++) {
             Button button = new Button(Integer.toString(i + 1));
-            // button soll so groß sein
-            button.setPrefWidth(quadratGroesse);
-            button.setPrefHeight(quadratGroesse);
-            // Zahl des Buttons soll 20px sein
-            button.setStyle("-fx-font-size: 20px;");
-            button.setOnAction(e -> buttonBewegen(button));
+            button.setOnAction(e -> {
+                buttonBewegen(button);
+                gewinnPruefen();
+            }); // Event listener beim Klicken
             buttons.add(button);
         }
     }
@@ -153,6 +158,11 @@ public class Spiel extends Application {
         for (int reiheAkt = 0; reiheAkt < gridGroesse; reiheAkt++) {
             for (int spalteAkt = 0; spalteAkt < gridGroesse; spalteAkt++) {
                 index = reiheAkt * gridGroesse + spalteAkt;
+                // Eigenschaften der Buttons
+                buttons.get(index).setFont(new Font("Elephant", 28));
+                buttons.get(index).setPrefWidth(quadratGroesse);
+                buttons.get(index).setPrefHeight(quadratGroesse);
+                buttons.get(index).setStyle("-fx-background-color: #555555; -fx-text-fill: #00AAAA;");
                 gridPane.add(buttons.get(index), reiheAkt, spalteAkt);
             }
         }
@@ -160,6 +170,13 @@ public class Spiel extends Application {
 
     // Der angeklickte Button wird mit dem leeren Button getauscht
     private void buttonBewegen(Button button) {
+        // leere Button finden
+        for (int i = 0; i < buttons.size(); i++) {
+            if (buttons.get(i).getText().isEmpty()) {
+                buttonLeer = buttons.get(i);
+                break;
+            }
+        }
         if (istButtonNeben(button, buttonLeer)) {
             String buttonZahl = button.getText();
             button.setText(buttonLeer.getText());
@@ -204,7 +221,7 @@ public class Spiel extends Application {
             ausgewaehlterButton.setText(zielButton.getText());
             zielButton.setText(tempText);
             // Addiert 1 zu der Zähler
-            zugeZaehler++;
+            zuegeZaehler++;
 
             // Aktualisiert die Position des leeren Buttons
             aktuelleIndex = neuerIndex;
@@ -234,7 +251,7 @@ public class Spiel extends Application {
                     break;
             }
         }
-        zugeZaehler = 0;
+        zuegeZaehler = 0;
     }
 
     // Ändert die Größe des Grids
@@ -243,7 +260,7 @@ public class Spiel extends Application {
         gridGroesse = groesse;
         buttonsErstellen();
         buttonsEinfuegen();
-        buttonLeer = buttons.get(0);
+        buttonLeer = buttons.get(buttons.size() - 1);
         buttonLeer.setText("");
         // Speichert die Zahlen der ButtonArayList für die Gewinnprüfung
         reihenfolgeRichtig = arraySpeichern(buttons);
@@ -251,8 +268,8 @@ public class Spiel extends Application {
 
     // Prüft ob die Zahlen geordnet sind
     private boolean gewinnPruefen() {
-        reigenfolgePruefen = arraySpeichern(buttons);
         // Speichert die Zahlen er ButtonArayList
+        reigenfolgePruefen = arraySpeichern(buttons);
         return reihenfolgeRichtig.equals(reigenfolgePruefen);
     }
 
@@ -270,12 +287,26 @@ public class Spiel extends Application {
 
     // Schickt eine PopUp wenn das Spiel gewonnen ist
     private void benachrichtigen() {
+        scene.getRoot().requestFocus();
         if (gewinnPruefen()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Geschafft!");
-            alert.setHeaderText("Züge: " + zugeZaehler + ", Zeit: " + letzteZeit);
-            alert.setContentText("Sie haben das Puzzle geschafft!");
-            alert.showAndWait();
+            stopTimer();
+            Alert gewonnen = new Alert(Alert.AlertType.INFORMATION);
+            gewonnen.setTitle("Gewinnmeldung");
+            if (sekunden < 60) {
+                int minuten = sekunden / 60;
+                int uebrigeSekunden = sekunden % 60;
+                if (sekunden > 120) {
+                    gewonnen.setHeaderText(
+                            "Züge: " + zuegeZaehler + ", Zeit: " + minuten + " Minuten und " + uebrigeSekunden
+                                    + " Sekunden");
+                } else {
+                    gewonnen.setHeaderText("Züge: " + zuegeZaehler + ", Zeit: " + minuten + " Minuten und "
+                            + uebrigeSekunden + " Sekunden");
+                }
+            } else {
+                gewonnen.setHeaderText("Züge: " + zuegeZaehler + ", Zeit: " + sekunden + " Sekunden");
+            }
+            gewonnen.showAndWait();
         }
     }
 
