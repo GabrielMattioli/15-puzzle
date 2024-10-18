@@ -1,7 +1,10 @@
 package org.gkl;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -10,30 +13,49 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Spiel extends Application {
-    private static final int viereckGroesse = 50;
-    private static final int reiheAnz = 4;
-    private static final int spaltenAnz = 4;
+    private static final int viereckAnz = 4;
+    private static final int quadratGroesse = 100;
 
     @Override
     public void start(Stage primaryStage) {
+
+        // gridpane erstllen und zentralisieren
         GridPane gridPane = new GridPane();
-        gridPane.setHgap(0);
-        gridPane.setVgap(0);
+        gridPane.setAlignment(Pos.CENTER);
 
-        for (int reihe = 0; reihe < reiheAnz; reihe++) {
-            for (int spalte = 0; spalte < spaltenAnz; spalte++) {
-                Rectangle viereck = new Rectangle(viereckGroesse, viereckGroesse, Color.LIGHTGRAY);
-                Text nummer = new Text(String.valueOf(reihe * spaltenAnz + spalte + 1));
-                StackPane stackPane = new StackPane(viereck, nummer);
-                gridPane.add(stackPane, spalte, reihe);
+        // Beispiel Element für Bewegung
+        Rectangle element = new Rectangle(50, 50);
+        element.setFill(Color.BLUE);
+
+        gridPane.add(element, 1, 1);
+
+        // Gridpane in Scene einfügen
+        Scene scene = new Scene(gridPane, viereckAnz * quadratGroesse, viereckAnz * quadratGroesse);
+
+        // input von Pfeile annehmen
+        scene.setOnKeyPressed(event -> {
+            KeyCode keyCode = event.getCode();
+            // Anzahl Pixels für Bewegung
+            double schritteAnz = 10;
+
+            switch (keyCode) {
+                case UP:
+                    element.setTranslateY(element.getTranslateY() + schritteAnz * -1);
+                    break;
+                case LEFT:
+                    element.setTranslateX(element.getTranslateX() + schritteAnz * -1);
+                    break;
+                case DOWN:
+                    element.setTranslateY(element.getTranslateY() + schritteAnz);
+                    break;
+                case RIGHT:
+                    element.setTranslateX(element.getTranslateX() + schritteAnz);
+                    break;
+                case ESCAPE:
+                    Platform.exit();
+                    break;
             }
-        }
-
-        Rectangle viereckLeer = new Rectangle(viereckGroesse, viereckGroesse, Color.WHITE);
-        StackPane paneLeer = new StackPane(viereckLeer);
-        gridPane.add(paneLeer, spaltenAnz - 1, reiheAnz - 1);
-
-        Scene scene = new Scene(gridPane, spaltenAnz * viereckGroesse, reiheAnz * viereckGroesse);
+        });
         primaryStage.setTitle("Schiebepuzzle");
         primaryStage.setScene(scene);
         primaryStage.show();
