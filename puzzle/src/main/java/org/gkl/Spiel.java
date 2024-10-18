@@ -20,24 +20,23 @@ import javafx.stage.Stage;
 
 public class Spiel extends Application {
 
-    private static final int gridGroesse = 3;
+    public static final int gridGroesse = 3;
     private static final int quadratGroesse = 100;
     Button button;
     List<Button> buttons = new ArrayList<>();
     int index;
     private Button buttonLeer;
     private int aktuelleIndex = 0;
+    GridPane gridPane = new GridPane();
 
     @Override
     public void start(Stage primaryStage) {
-
-        // Erstellung von Elemente
+        // Erstellung von Elementen
         Label titelSpiel = new Label("GKL Puzzle");
         titelSpiel.setTextFill(Color.RED);
         titelSpiel.setFont(new Font(22));
 
         // Erstellung von Panes
-        GridPane gridPane = new GridPane();
         BorderPane borderPane = new BorderPane();
 
         // Bereiche der borderPane organisieren
@@ -72,15 +71,12 @@ public class Spiel extends Application {
         Collections.shuffle(buttons);
 
         // Buttons ins gridPane einfügen
-        for (int reiheAkt = 0; reiheAkt < gridGroesse; reiheAkt++) {
-            for (int spalteAkt = 0; spalteAkt < gridGroesse; spalteAkt++) {
-                index = reiheAkt * gridGroesse + spalteAkt;
-                gridPane.add(buttons.get(index), reiheAkt, spalteAkt);
-            }
-        }
+        buttonsEinfuegen();
 
         buttonLeer = buttons.get(0);
         buttonLeer.setText("");
+
+        puzzleMischen();
 
         // Das Fenster muss 640x480 Groß sein
         Scene scene = new Scene(borderPane, 640, 480);
@@ -108,14 +104,30 @@ public class Spiel extends Application {
             case RIGHT:
                 nummerTauschen(1, 0);
                 break;
+            case ENTER:
+                puzzleMischen();
+                gridPane.getChildren().clear();
+                buttonsEinfuegen();
+                gridPane.requestFocus();
+                break;
             case ESCAPE:
                 Platform.exit();
                 break;
         }
     }
 
+    // Buttons ins GridPane einfügen
+    private void buttonsEinfuegen() {
+        for (int reiheAkt = 0; reiheAkt < gridGroesse; reiheAkt++) {
+            for (int spalteAkt = 0; spalteAkt < gridGroesse; spalteAkt++) {
+                index = reiheAkt * gridGroesse + spalteAkt;
+                gridPane.add(buttons.get(index), reiheAkt, spalteAkt);
+            }
+        }
+    }
+
     private void buttonBewegen(Button button) {
-        if (buttonNeben(button, buttonLeer)) {
+        if (istButtonNeben(button, buttonLeer)) {
             String buttonZahl = button.getText();
             button.setText(buttonLeer.getText());
             buttonLeer.setText(buttonZahl);
@@ -123,7 +135,7 @@ public class Spiel extends Application {
         }
     }
 
-    private boolean buttonNeben(Button buttonZahl, Button buttonLeer) {
+    private boolean istButtonNeben(Button buttonZahl, Button buttonLeer) {
         int indexZahl = buttonZahl.getParent().getChildrenUnmodifiable().indexOf(buttonZahl);
         int indexLeer = buttonLeer.getParent().getChildrenUnmodifiable().indexOf(buttonLeer);
         int reiheIndexZahl = indexZahl / gridGroesse;
@@ -148,15 +160,40 @@ public class Spiel extends Application {
             int neuerIndex = neueReihe * gridGroesse + neueSpalte;
 
             // Tauscht die Zahlen
-            Button selectedButton = buttons.get(aktuelleIndex);
-            Button targetButton = buttons.get(neuerIndex);
+            Button ausgewaehlterButton = buttons.get(aktuelleIndex);
+            Button zielButton = buttons.get(neuerIndex);
 
-            String tmpText = selectedButton.getText();
-            selectedButton.setText(targetButton.getText());
-            targetButton.setText(tmpText);
+            String tempText = ausgewaehlterButton.getText();
+            ausgewaehlterButton.setText(zielButton.getText());
+            zielButton.setText(tempText);
 
             // Aktualisiert die Position des leeren Buttons
             aktuelleIndex = neuerIndex;
+        }
+    }
+
+    public void puzzleMischen() {
+        ArrayList<Integer> letzteRichtungen = new ArrayList<>();
+
+        for (int bewegungen = 0; bewegungen < 60; bewegungen++) {
+            // 1=oben, 2=unten, 3=links, 4=rechts
+            int randomRichtung = (int) (Math.random() * (4) + 1);
+
+            letzteRichtungen.add(randomRichtung);
+            switch (randomRichtung) {
+                case 1:
+                    nummerTauschen(0, 1);
+                    break;
+                case 2:
+                    nummerTauschen(0, -1);
+                    break;
+                case 3:
+                    nummerTauschen(1, 0);
+                    break;
+                case 4:
+                    nummerTauschen(-1, 0);
+                    break;
+            }
         }
     }
 }
