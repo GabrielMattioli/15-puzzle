@@ -1,7 +1,9 @@
 package org.gkl;
 
-public class Main {
+import javafx.application.Application;
+
+public class Main extends Spiel{
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Application.launch(args);
     }
 }
