@@ -163,7 +163,7 @@ public class Spiel extends Application {
                 buttons.get(index).setPrefWidth(quadratGroesse);
                 buttons.get(index).setPrefHeight(quadratGroesse);
                 buttons.get(index).setStyle("-fx-background-color: #555555; -fx-text-fill: #00AAAA;");
-                gridPane.add(buttons.get(index), reiheAkt, spalteAkt);
+                gridPane.add(buttons.get(index), spalteAkt, reiheAkt);
             }
         }
     }
