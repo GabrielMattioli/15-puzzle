@@ -2,8 +2,6 @@ package org.gkl;
 
 import javafx.util.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,7 +19,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Spiel extends Application {
@@ -252,6 +249,7 @@ public class Spiel extends Application {
             }
         }
         zuegeZaehler = 0;
+        startTimer();
     }
 
     // Ändert die Größe des Grids
@@ -264,6 +262,7 @@ public class Spiel extends Application {
         buttonLeer.setText("");
         // Speichert die Zahlen der ButtonArayList für die Gewinnprüfung
         reihenfolgeRichtig = arraySpeichern(buttons);
+        puzzleMischen();
     }
 
     // Prüft ob die Zahlen geordnet sind
@@ -292,7 +291,7 @@ public class Spiel extends Application {
             stopTimer();
             Alert gewonnen = new Alert(Alert.AlertType.INFORMATION);
             gewonnen.setTitle("Gewinnmeldung");
-            if (sekunden < 60) {
+            if (sekunden > 60) {
                 int minuten = sekunden / 60;
                 int uebrigeSekunden = sekunden % 60;
                 if (sekunden > 120) {
@@ -300,7 +299,7 @@ public class Spiel extends Application {
                             "Züge: " + zuegeZaehler + ", Zeit: " + minuten + " Minuten und " + uebrigeSekunden
                                     + " Sekunden");
                 } else {
-                    gewonnen.setHeaderText("Züge: " + zuegeZaehler + ", Zeit: " + minuten + " Minuten und "
+                    gewonnen.setHeaderText("Züge: " + zuegeZaehler + ", Zeit: " + minuten + " Minute und "
                             + uebrigeSekunden + " Sekunden");
                 }
             } else {
