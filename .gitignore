@@ -1,0 +1,60 @@
+# Kompilierte Klassendateien
+*.class
+
+# Protokolldateien
+*.log
+
+# Paketdateien
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Absturzprotokolle der virtuellen Maschine
+hs_err_pid*
+replay_pid*
+
+# Maven-spezifisch
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# JavaFX-spezifisch
+build/
+dist/
+out/
+
+# VSCode-spezifisch
+.vscode/
+*.code-workspace
+
+# Lokaler Verlauf für Visual Studio Code
+.history/
+
+# Gebaute Visual Studio Code-Erweiterungen
+*.vsix
+
+# Betriebssystem-spezifische Dateien
+.DS_Store
+Thumbs.db
+
+# Scene Builder Sicherungsdateien
+*.bak
+
+# JavaFX-Laufzeitumgebung (falls im Projekt enthalten)
+javafx-sdk/
+
+# Java Language Server
+.project
+.classpath
+.settings/
