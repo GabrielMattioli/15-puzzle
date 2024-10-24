@@ -10,7 +10,10 @@
             "request": "launch",
             "mainClass": "org.gkl.Main",
             "projectName": "puzzle",
-            "vmArgs": "--module-path ${env:PATH_TO_FX} --add-modules javafx.controls,javafx.fxml"
+            "vmArgs": "--module-path C:/Apps/javafx-sdk-23/lib --add-modules javafx.controls,javafx.fxml",
+            "env": {
+                "PATH_TO_FX": "C:/Apps/javafx-sdk-23/lib"
+            }
         }
     ]
 }
