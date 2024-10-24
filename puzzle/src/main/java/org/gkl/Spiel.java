@@ -1,6 +1,5 @@
 package org.gkl;
 
-import javafx.util.Duration;
 import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
@@ -20,10 +19,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Spiel extends Application {
     public static int gridGroesse = 4; // Standart auf 3 setzen
-    private static int quadratGroesse = 100;
+    private static final int quadratGroesse = 100;
     ArrayList<Button> buttons = new ArrayList<>();
     int index;
     private Button buttonLeer;
@@ -85,55 +85,53 @@ public class Spiel extends Application {
     @SuppressWarnings("incomplete-switch")
     private void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
-            case UP:
+            case UP -> {
                 nummerTauschen(0, 1);
                 benachrichtigen();
-                break;
-            case DOWN:
+            }
+            case DOWN -> {
                 nummerTauschen(0, -1);
                 benachrichtigen();
-                break;
-            case LEFT:
+            }
+            case LEFT -> {
                 nummerTauschen(1, 0);
                 benachrichtigen();
-                break;
-            case RIGHT:
+            }
+            case RIGHT -> {
                 nummerTauschen(-1, 0);
                 benachrichtigen();
-                break;
-            case ENTER:
+            }
+            case ENTER -> {
                 puzzleMischen();
                 gridPane.getChildren().clear();
                 buttonsEinfuegen();
                 gridPane.requestFocus();
-                break;
-            case DIGIT3:
+            }
+            case DIGIT3 -> {
                 gridFuellen(3);
                 puzzleMischen();
-                break;
-            case DIGIT4:
+            }
+            case DIGIT4 -> {
                 gridFuellen(4);
                 puzzleMischen();
-                break;
-            case DIGIT5:
+            }
+            case DIGIT5 -> {
                 gridFuellen(5);
                 puzzleMischen();
-                break;
-            case DIGIT6:
+            }
+            case DIGIT6 -> {
                 gridFuellen(6);
                 puzzleMischen();
-                break;
-            case DIGIT7:
+            }
+            case DIGIT7 -> {
                 gridFuellen(7);
                 puzzleMischen();
-                break;
-            case DIGIT8:
+            }
+            case DIGIT8 -> {
                 gridFuellen(8);
                 puzzleMischen();
-                break;
-            case ESCAPE:
-                Platform.exit();
-                break;
+            }
+            case ESCAPE -> Platform.exit();
         }
     }
 
@@ -234,18 +232,10 @@ public class Spiel extends Application {
 
             letzteRichtungen.add(randomRichtung);
             switch (randomRichtung) {
-                case 1:
-                    nummerTauschen(0, 1);
-                    break;
-                case 2:
-                    nummerTauschen(0, -1);
-                    break;
-                case 3:
-                    nummerTauschen(1, 0);
-                    break;
-                case 4:
-                    nummerTauschen(-1, 0);
-                    break;
+                case 1 -> nummerTauschen(0, 1);
+                case 2 -> nummerTauschen(0, -1);
+                case 3 -> nummerTauschen(1, 0);
+                case 4 -> nummerTauschen(-1, 0);
             }
         }
         zuegeZaehler = 0;
