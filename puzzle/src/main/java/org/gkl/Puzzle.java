@@ -1,8 +1,9 @@
 package org.gkl;
 
+import java.util.ArrayList;
+
 import javafx.animation.Timeline;
 import javafx.scene.control.Button;
-import java.util.ArrayList;
 
 public class Puzzle {
     private int gridGroesse;
@@ -49,8 +50,8 @@ public class Puzzle {
 
     // Ändert die Position des leeren Buttons
     public void nummerTauschen(int xSpalte, int xReihe) {
-        // Neue Indes des leeren Button finden
-        for (int i = 0; i < buttons.size(); i++) {
+        // Neue Index des leeren Button finden
+        for (int i = 0; i < buttons.size(); i++) { // Button size ist 9
             if (buttons.get(i).getText().isEmpty()) {
                 aktuelleIndex = i;
                 break;
@@ -92,6 +93,7 @@ public class Puzzle {
             buttonLeer.setText(buttonZahl);
             buttonLeer = button;
         }
+        //gridPane.requestFocus();
     }
 
     private boolean istButtonNeben(Button buttonZahl, Button buttonLeer) {

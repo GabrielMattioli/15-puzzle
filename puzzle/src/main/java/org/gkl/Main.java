@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Main extends Application {
-    public static int gridGroesse = 4; // Standardgröße des Grids
+    public int gridGroesse = 3; // Standardgröße des Grids
     private static final int QUADRAT_GROESSE = 100;
     private int sekunden;
     private Timeline timeline;
@@ -76,12 +76,10 @@ public class Main extends Application {
     }
 
     private void setupSpiel() {
-        puzzle = new Puzzle(gridGroesse); // buttons sind in Puzzle
+        puzzle = new Puzzle(gridGroesse);
         sekunden = puzzle.getSekunden();
         buttonManager = new ButtonManager(gridPane, puzzle);
-        gridFuellen(gridGroesse);       
-        
-
+        gridFuellen(gridGroesse);
     }
 
     @SuppressWarnings("incomplete-switch")
@@ -112,29 +110,11 @@ public class Main extends Application {
                 buttonManager.aktualisiereButtons();
                 gridPane.requestFocus();
             }
-            case DIGIT3 -> {
-                gridFuellen(3);
+            case DIGIT3, DIGIT4, DIGIT5, DIGIT6, DIGIT7, DIGIT8 -> {
+                int neueGroesse = Integer.parseInt(event.getText());
+                gridFuellen(neueGroesse);
                 puzzle.mischen();
-            }
-            case DIGIT4 -> {
-                gridFuellen(4);
-                puzzle.mischen();
-            }
-            case DIGIT5 -> {
-                gridFuellen(5);
-                puzzle.mischen();
-            }
-            case DIGIT6 -> {
-                gridFuellen(6);
-                puzzle.mischen();
-            }
-            case DIGIT7 -> {
-                gridFuellen(7);
-                puzzle.mischen();
-            }
-            case DIGIT8 -> {
-                gridFuellen(8);
-                puzzle.mischen();
+                gridPane.requestFocus();
             }
             case ESCAPE -> Platform.exit();
         }
@@ -142,13 +122,13 @@ public class Main extends Application {
     // Ändert die Größe des Grids
     private void gridFuellen(int groesse) {
         gridPane.getChildren().clear();
-        gridGroesse = groesse;
-        buttonManager.buttonsErstellen();
-        buttonManager.buttonsEinfuegen();
+        this.gridGroesse = groesse;
+        buttonManager.buttonsErstellen(groesse);
+        buttonManager.buttonsEinfuegen(groesse);
         puzzle.setButtonLeer(puzzle.getButtons().get(puzzle.getButtons().size() - 1));
-        puzzle.getButtonLeer().setText(" ");
+        puzzle.getButtonLeer().setText("");
         // Speichert die Zahlen der buttons ArrayList für die Gewinnprüfung
-        puzzle.setReihenfolgeRichtig(buttonManager.arraySpeichern());
+        puzzle.setReihenfolgeRichtig(buttonManager.arraySpeichern());            
         puzzle.mischen();
     }
 

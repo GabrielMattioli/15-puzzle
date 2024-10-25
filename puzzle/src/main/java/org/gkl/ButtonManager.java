@@ -1,15 +1,17 @@
 package org.gkl;
 
+import java.util.ArrayList;
+
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import java.util.ArrayList;
 
 public class ButtonManager {
     private GridPane gridPane;
     private Puzzle puzzle;
     private ArrayList<Button> buttons;
     private int gridGroesse;
+    private Button buttonLeer;
 
     public ButtonManager(GridPane gridPane, Puzzle puzzle) {
         this.gridPane = gridPane;
@@ -17,15 +19,16 @@ public class ButtonManager {
         this.gridGroesse = puzzle.getGridGroesse();
         this.buttons = puzzle.getButtons();
         puzzleStarten();
+        this.buttonLeer = buttons.get(buttons.size() - 1);
     }
 
     private void puzzleStarten() {
-        buttonsErstellen();
-        buttonsEinfuegen();
+        buttonsErstellen(gridGroesse);
+        buttonsEinfuegen(gridGroesse);
     }
 
     // Erstellt Buttons und fügt sie in die ArrayList "buttons" ein
-    public void buttonsErstellen() {
+    public void buttonsErstellen(int gridGroesse) {
         buttons.clear();
         for (int i = 0; i < gridGroesse * gridGroesse; i++) {
             Button button = new Button(Integer.toString(i + 1));
@@ -37,23 +40,25 @@ public class ButtonManager {
         }
     }
 
-    public void buttonsEinfuegen() {
+    // Buttons in das GridPane einfügen
+    public void buttonsEinfuegen(int gridGroesse) {
         for (int reiheAkt = 0; reiheAkt < gridGroesse; reiheAkt++) {
             for (int spalteAkt = 0; spalteAkt < gridGroesse; spalteAkt++) {
                 int index = reiheAkt * gridGroesse + spalteAkt;
-                Button button = buttons.get(index);
-                button.setFont(new Font("Elephant", 28));
-                button.setPrefWidth(Main.getQUADRAT_GROESSE());
-                button.setPrefHeight(Main.getQUADRAT_GROESSE());
-                button.setStyle("-fx-background-color: #555555; -fx-text-fill: #00AAAA;");
-                gridPane.add(button, spalteAkt, reiheAkt);
+                buttons = puzzle.getButtons();
+                // Eigenschaften der Buttons
+                buttons.get(index).setFont(new Font("Elephant", 28));
+                buttons.get(index).setPrefWidth(Main.getQUADRAT_GROESSE());
+                buttons.get(index).setPrefHeight((Main.getQUADRAT_GROESSE()));
+                buttons.get(index).setStyle("-fx-background-color: #555555; -fx-text-fill: #00AAAA;");
+                gridPane.add(buttons.get(index),spalteAkt,reiheAkt);
             }
         }
     }
 
     public void aktualisiereButtons() {
         gridPane.getChildren().clear();
-        buttonsEinfuegen();
+        buttonsEinfuegen(gridGroesse);
     }
 
     // Speichert die ArrayLists
