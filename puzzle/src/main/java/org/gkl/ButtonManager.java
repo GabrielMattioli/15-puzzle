@@ -10,7 +10,6 @@ public class ButtonManager {
     private GridPane gridPane;
     private Puzzle puzzle;
     private ArrayList<Button> buttons;
-    private Button buttonLeer;
 
     public ButtonManager(GridPane gridPane, Puzzle puzzle) {
         this.gridPane = gridPane;
@@ -18,7 +17,6 @@ public class ButtonManager {
         this.buttons = puzzle.getButtons();
         buttonsErstellen(puzzle.getGridGroesse());
         buttonsEinfuegen(puzzle.getGridGroesse());
-        this.buttonLeer = buttons.get(buttons.size() - 1);
     }
 
     // Erstellt Buttons und fügt sie in die ArrayList "buttons" ein
