@@ -10,27 +10,21 @@ public class ButtonManager {
     private GridPane gridPane;
     private Puzzle puzzle;
     private ArrayList<Button> buttons;
-    private int gridGroesse;
     private Button buttonLeer;
 
     public ButtonManager(GridPane gridPane, Puzzle puzzle) {
         this.gridPane = gridPane;
         this.puzzle = puzzle;
-        this.gridGroesse = puzzle.getGridGroesse();
         this.buttons = puzzle.getButtons();
-        puzzleStarten();
+        buttonsErstellen(puzzle.getGridGroesse());
+        buttonsEinfuegen(puzzle.getGridGroesse());
         this.buttonLeer = buttons.get(buttons.size() - 1);
     }
 
-    private void puzzleStarten() {
-        buttonsErstellen(gridGroesse);
-        buttonsEinfuegen(gridGroesse);
-    }
-
     // Erstellt Buttons und fügt sie in die ArrayList "buttons" ein
-    public void buttonsErstellen(int gridGroesse) {
+    public void buttonsErstellen(int gridgroesse) {
         buttons.clear();
-        for (int i = 0; i < gridGroesse * gridGroesse; i++) {
+        for (int i = 0; i < gridgroesse * gridgroesse; i++) {
             Button button = new Button(Integer.toString(i + 1));
             button.setOnAction(e -> {
                 puzzle.buttonBewegen(button);
@@ -41,10 +35,10 @@ public class ButtonManager {
     }
 
     // Buttons in das GridPane einfügen
-    public void buttonsEinfuegen(int gridGroesse) {
-        for (int reiheAkt = 0; reiheAkt < gridGroesse; reiheAkt++) {
-            for (int spalteAkt = 0; spalteAkt < gridGroesse; spalteAkt++) {
-                int index = reiheAkt * gridGroesse + spalteAkt;
+    public void buttonsEinfuegen(int gridgroesse) {
+        for (int reiheAkt = 0; reiheAkt < gridgroesse; reiheAkt++) {
+            for (int spalteAkt = 0; spalteAkt < gridgroesse; spalteAkt++) {
+                int index = reiheAkt * gridgroesse + spalteAkt;
                 buttons = puzzle.getButtons();
                 // Eigenschaften der Buttons
                 buttons.get(index).setFont(new Font("Elephant", 28));
@@ -54,11 +48,6 @@ public class ButtonManager {
                 gridPane.add(buttons.get(index),spalteAkt,reiheAkt);
             }
         }
-    }
-
-    public void aktualisiereButtons() {
-        gridPane.getChildren().clear();
-        buttonsEinfuegen(gridGroesse);
     }
 
     // Speichert die ArrayLists

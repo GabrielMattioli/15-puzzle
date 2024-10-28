@@ -24,34 +24,10 @@ public class Puzzle {
         this.timeline = new Timeline();
     }
 
-    public int getSekunden() {
-        return sekunden;
-    }
-
-    public int getGridGroesse() {
-        return gridGroesse;
-    }
-
-    public void setButtonLeer(Button buttonLeer) {
-        this.buttonLeer = buttonLeer;
-    }
-
-    public void setReihenfolgeRichtig(String reihenfolgeRichtig) {
-        this.reihenfolgeRichtig = reihenfolgeRichtig;
-    }
-
-    public int getZuegeZaehler() {
-        return zuegeZaehler;
-    }
-
-    public ArrayList<Button> getButtons() {
-        return buttons;
-    }
-
     // Ändert die Position des leeren Buttons
     public void nummerTauschen(int xSpalte, int xReihe) {
         // Neue Index des leeren Button finden
-        for (int i = 0; i < buttons.size(); i++) { // Button size ist 9
+        for (int i = 0; i < buttons.size(); i++) {
             if (buttons.get(i).getText().isEmpty()) {
                 aktuelleIndex = i;
                 break;
@@ -93,7 +69,7 @@ public class Puzzle {
             buttonLeer.setText(buttonZahl);
             buttonLeer = button;
         }
-        //gridPane.requestFocus();
+        buttonLeer.getParent().requestFocus();
     }
 
     private boolean istButtonNeben(Button buttonZahl, Button buttonLeer) {
@@ -142,6 +118,8 @@ public class Puzzle {
         return string.toString();
     }
 
+    // Timer
+
     public void startTimer() {
         timeline.play();
     }
@@ -150,7 +128,37 @@ public class Puzzle {
         timeline.stop();
     }
 
+    // Getters und Setters
+
     public Button getButtonLeer() {
         return buttons.get(buttons.size() - 1);
+    }
+
+    public int getSekunden() {
+        return sekunden;
+    }
+
+    public int getGridGroesse() {
+        return gridGroesse;
+    }
+
+    public void setGridGroesse(int gridGroesse) {
+        this.gridGroesse = gridGroesse;
+    }
+
+    public int getZuegeZaehler() {
+        return zuegeZaehler;
+    }
+
+    public ArrayList<Button> getButtons() {
+        return buttons;
+    }
+
+    public void setButtonLeer(Button buttonLeer) {
+        this.buttonLeer = buttonLeer;
+    }
+
+    public void setReihenfolgeRichtig(String reihenfolgeRichtig) {
+        this.reihenfolgeRichtig = reihenfolgeRichtig;
     }
 }

@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Main extends Application {
-    public int gridGroesse = 3; // Standardgröße des Grids
     private static final int QUADRAT_GROESSE = 100;
     private int sekunden;
     private Timeline timeline;
@@ -28,10 +27,6 @@ public class Main extends Application {
     private final Scene scene = new Scene(borderPane, 640, 480);
     private Puzzle puzzle;
     private ButtonManager buttonManager;
-
-    public static int getQUADRAT_GROESSE() {
-        return QUADRAT_GROESSE;
-    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -76,10 +71,10 @@ public class Main extends Application {
     }
 
     private void setupSpiel() {
-        puzzle = new Puzzle(gridGroesse);
+        puzzle = new Puzzle(3); // Standartgroesse ist 3
         sekunden = puzzle.getSekunden();
         buttonManager = new ButtonManager(gridPane, puzzle);
-        gridFuellen(gridGroesse);
+        gridFuellen(puzzle.getGridGroesse());
     }
 
     @SuppressWarnings("incomplete-switch")
@@ -87,33 +82,29 @@ public class Main extends Application {
         switch (event.getCode()) {
             case UP -> {
                 puzzle.nummerTauschen(0, 1);
-                buttonManager.aktualisiereButtons();
                 benachrichtigen();
             }
             case DOWN -> {
                 puzzle.nummerTauschen(0, -1);
-                buttonManager.aktualisiereButtons();
                 benachrichtigen();
             }
             case LEFT -> {
                 puzzle.nummerTauschen(1, 0);
-                buttonManager.aktualisiereButtons();
                 benachrichtigen();
             }
             case RIGHT -> {
                 puzzle.nummerTauschen(-1, 0);
-                buttonManager.aktualisiereButtons();
                 benachrichtigen();
             }
             case ENTER -> {
                 puzzle.mischen();
-                buttonManager.aktualisiereButtons();
                 gridPane.requestFocus();
             }
             case DIGIT3, DIGIT4, DIGIT5, DIGIT6, DIGIT7, DIGIT8 -> {
                 int neueGroesse = Integer.parseInt(event.getText());
-                gridFuellen(neueGroesse);
-                puzzle.mischen();
+                puzzle.setGridGroesse(neueGroesse);
+                gridFuellen(puzzle.getGridGroesse());
+                //puzzle.mischen();
                 gridPane.requestFocus();
             }
             case ESCAPE -> Platform.exit();
@@ -122,13 +113,13 @@ public class Main extends Application {
     // Ändert die Größe des Grids
     private void gridFuellen(int groesse) {
         gridPane.getChildren().clear();
-        this.gridGroesse = groesse;
+        //puzzle.setGridGroesse(groesse);
         buttonManager.buttonsErstellen(groesse);
         buttonManager.buttonsEinfuegen(groesse);
         puzzle.setButtonLeer(puzzle.getButtons().get(puzzle.getButtons().size() - 1));
         puzzle.getButtonLeer().setText("");
         // Speichert die Zahlen der buttons ArrayList für die Gewinnprüfung
-        puzzle.setReihenfolgeRichtig(buttonManager.arraySpeichern());            
+        puzzle.setReihenfolgeRichtig(buttonManager.arraySpeichern());
         puzzle.mischen();
     }
 
@@ -154,6 +145,16 @@ public class Main extends Application {
             }
             gewonnen.showAndWait();
         }
+    }
+
+    // Getters und Setters
+
+    public static int getQUADRAT_GROESSE() {
+        return QUADRAT_GROESSE;
+    }
+
+    public GridPane getGridPane() {
+        return gridPane;
     }
 
     public static void main(String[] args) {
