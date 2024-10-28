@@ -71,7 +71,7 @@ public class Main extends Application {
     }
 
     private void setupSpiel() {
-        puzzle = new Puzzle(3); // Standartgroesse ist 3
+        puzzle = new Puzzle(3, this); // Standartgroesse ist 3
         sekunden = puzzle.getSekunden();
         buttonManager = new ButtonManager(gridPane, puzzle);
         gridFuellen(puzzle.getGridGroesse());
@@ -155,7 +155,13 @@ public class Main extends Application {
         return gridPane;
     }
 
+    public Timeline getTimeline() {
+        return timeline;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
+
+    
 }

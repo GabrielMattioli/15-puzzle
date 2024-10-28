@@ -15,13 +15,16 @@ public class Puzzle {
     private Timeline timeline;
     private String reihenfolgeRichtig;
     private String reihenfolgePruefen;
+    private Main main;
 
-    public Puzzle(int gridGroesse) {
+    // Konstruktor, der die Main-Instanz akzeptiert
+    public Puzzle(int gridGroesse, Main main) {
         this.gridGroesse = gridGroesse;
         this.buttons = new ArrayList<>();
         this.zuegeZaehler = 0;
         this.sekunden = 0;
-        this.timeline = new Timeline();
+        this.main = main;
+        this.timeline = main.getTimeline();
     }
 
     // Ändert die Position des leeren Buttons
@@ -121,11 +124,11 @@ public class Puzzle {
     // Timer
 
     public void startTimer() {
-        timeline.play();
+        main.getTimeline().play();
     }
 
     public void stopTimer() {
-        timeline.stop();
+        main.getTimeline().stop();
     }
 
     // Getters und Setters
