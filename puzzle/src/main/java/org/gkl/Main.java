@@ -104,7 +104,6 @@ public class Main extends Application {
                 int neueGroesse = Integer.parseInt(event.getText());
                 puzzle.setGridGroesse(neueGroesse);
                 gridFuellen(puzzle.getGridGroesse());
-                //puzzle.mischen();
                 gridPane.requestFocus();
             }
             case ESCAPE -> Platform.exit();
@@ -113,7 +112,6 @@ public class Main extends Application {
     // Ändert die Größe des Grids
     private void gridFuellen(int groesse) {
         gridPane.getChildren().clear();
-        //puzzle.setGridGroesse(groesse);
         buttonManager.buttonsErstellen(groesse);
         buttonManager.buttonsEinfuegen(groesse);
         puzzle.setButtonLeer(puzzle.getButtons().get(puzzle.getButtons().size() - 1));

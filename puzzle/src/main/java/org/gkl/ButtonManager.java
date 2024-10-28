@@ -41,7 +41,7 @@ public class ButtonManager {
                 int index = reiheAkt * gridgroesse + spalteAkt;
                 buttons = puzzle.getButtons();
                 // Eigenschaften der Buttons
-                buttons.get(index).setFont(new Font("Elephant", 28));
+                buttons.get(index).setFont(new Font("Elephant", 27));
                 buttons.get(index).setPrefWidth(Main.getQUADRAT_GROESSE());
                 buttons.get(index).setPrefHeight((Main.getQUADRAT_GROESSE()));
                 buttons.get(index).setStyle("-fx-background-color: #555555; -fx-text-fill: #00AAAA;");
