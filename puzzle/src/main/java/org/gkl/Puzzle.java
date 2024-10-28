@@ -16,8 +16,7 @@ public class Puzzle {
     private String reihenfolgeRichtig;
     private String reihenfolgePruefen;
     private Main main;
-
-    // Konstruktor, der die Main-Instanz akzeptiert
+    
     public Puzzle(int gridGroesse, Main main) {
         this.gridGroesse = gridGroesse;
         this.buttons = new ArrayList<>();
