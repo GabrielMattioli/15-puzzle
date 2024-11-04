@@ -96,12 +96,16 @@ public class Puzzle {
             switch (randomRichtung) {
                 case 1:
                     nummerTauschen(0, 1);
+                    break;
                 case 2:
                     nummerTauschen(0, -1);
+                    break;
                 case 3:
                     nummerTauschen(1, 0);
+                    break;
                 case 4:
                     nummerTauschen(-1, 0);
+                    break;
             }
         }
         zuegeZaehler = 0;
