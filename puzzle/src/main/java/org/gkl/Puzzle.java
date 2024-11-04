@@ -94,10 +94,17 @@ public class Puzzle {
             int randomRichtung = (int) (Math.random() * 4 + 1);
             letzteRichtungen.add(randomRichtung);
             switch (randomRichtung) {
-                case 1 -> nummerTauschen(0, 1);
-                case 2 -> nummerTauschen(0, -1);
-                case 3 -> nummerTauschen(1, 0);
-                case 4 -> nummerTauschen(-1, 0);
+                case 1:
+                	nummerTauschen(0, 1);
+                	
+                case 2:
+                	nummerTauschen(0, -1);
+                	
+                case 3:
+                	nummerTauschen(1, 0);
+                	
+                case 4:
+                	nummerTauschen(-1, 0);
             }
         }
         zuegeZaehler = 0;
