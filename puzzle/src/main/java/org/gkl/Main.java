@@ -79,34 +79,66 @@ public class Main extends Application {
 
     @SuppressWarnings("incomplete-switch")
     private void handleKeyPress(KeyEvent event) {
+        int neueGroesse;
         switch (event.getCode()) {
-            case UP -> {
+            case UP:
                 puzzle.nummerTauschen(0, 1);
                 benachrichtigen();
-            }
-            case DOWN -> {
+            
+            case DOWN:
                 puzzle.nummerTauschen(0, -1);
                 benachrichtigen();
-            }
-            case LEFT -> {
+            
+            case LEFT:
                 puzzle.nummerTauschen(1, 0);
                 benachrichtigen();
-            }
-            case RIGHT -> {
+            
+            case RIGHT:
                 puzzle.nummerTauschen(-1, 0);
                 benachrichtigen();
-            }
-            case ENTER -> {
+            
+            case ENTER:
                 puzzle.mischen();
                 gridPane.requestFocus();
-            }
-            case DIGIT3, DIGIT4, DIGIT5, DIGIT6, DIGIT7, DIGIT8 -> {
-                int neueGroesse = Integer.parseInt(event.getText());
+            
+            case DIGIT3:
+                neueGroesse = Integer.parseInt(event.getText());
                 puzzle.setGridGroesse(neueGroesse);
                 gridFuellen(puzzle.getGridGroesse());
                 gridPane.requestFocus();
-            }
-            case ESCAPE -> Platform.exit();
+
+            case DIGIT4:
+                neueGroesse = Integer.parseInt(event.getText());
+                puzzle.setGridGroesse(neueGroesse);
+                gridFuellen(puzzle.getGridGroesse());
+                gridPane.requestFocus();
+
+            case DIGIT5:
+                neueGroesse = Integer.parseInt(event.getText());
+                puzzle.setGridGroesse(neueGroesse);
+                gridFuellen(puzzle.getGridGroesse());
+                gridPane.requestFocus();
+
+            case DIGIT6:
+                neueGroesse = Integer.parseInt(event.getText());
+                puzzle.setGridGroesse(neueGroesse);
+                gridFuellen(puzzle.getGridGroesse());
+                gridPane.requestFocus();
+
+            case DIGIT7:
+                neueGroesse = Integer.parseInt(event.getText());
+                puzzle.setGridGroesse(neueGroesse);
+                gridFuellen(puzzle.getGridGroesse());
+                gridPane.requestFocus();
+                
+            case DIGIT8:
+                neueGroesse = Integer.parseInt(event.getText());
+                puzzle.setGridGroesse(neueGroesse);
+                gridFuellen(puzzle.getGridGroesse());
+                gridPane.requestFocus();
+            
+            case ESCAPE:
+                Platform.exit();
         }
     }
     // Ändert die Größe des Grids
