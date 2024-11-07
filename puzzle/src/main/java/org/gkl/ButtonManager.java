@@ -10,10 +10,12 @@ public class ButtonManager {
     private GridPane gridPane;
     private Puzzle puzzle;
     private ArrayList<Button> buttons;
+    private Main main;
 
-    public ButtonManager(GridPane gridPane, Puzzle puzzle) {
+    public ButtonManager(GridPane gridPane, Puzzle puzzle, Main main) {
         this.gridPane = gridPane;
         this.puzzle = puzzle;
+        this.main = main;
         this.buttons = puzzle.getButtons();
         buttonsErstellen(puzzle.getGridGroesse());
         buttonsEinfuegen(puzzle.getGridGroesse());
@@ -26,7 +28,7 @@ public class ButtonManager {
             Button button = new Button(Integer.toString(i + 1));
             button.setOnAction(e -> {
                 puzzle.buttonBewegen(button);
-                puzzle.gewinnPruefen();
+                main.benachrichtigen();
             }); // Event listener beim Klicken
             buttons.add(button);
         }

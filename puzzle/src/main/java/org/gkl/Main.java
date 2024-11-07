@@ -73,7 +73,7 @@ public class Main extends Application {
     private void setupSpiel() {
         puzzle = new Puzzle(3, this); // Standartgroesse ist 3
         sekunden = puzzle.getSekunden();
-        buttonManager = new ButtonManager(gridPane, puzzle);
+        buttonManager = new ButtonManager(gridPane, puzzle, this);
         gridFuellen(puzzle.getGridGroesse());
     }
 
@@ -165,7 +165,7 @@ public class Main extends Application {
         puzzle.mischen();
     }
 
-    private void benachrichtigen() {
+    protected void benachrichtigen() {
         scene.getRoot().requestFocus();
         if (puzzle.gewinnPruefen()) {
             puzzle.stopTimer();
@@ -188,6 +188,11 @@ public class Main extends Application {
             gewonnen.showAndWait();
         }
     }
+
+    public void setSekundenNull() {
+        sekunden = 0;
+    }
+    
 
     // Getters und Setters
 

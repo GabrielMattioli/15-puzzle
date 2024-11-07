@@ -70,6 +70,7 @@ public class Puzzle {
             button.setText(buttonLeer.getText());
             buttonLeer.setText(buttonZahl);
             buttonLeer = button;
+            zuegeZaehler++;
         }
         buttonLeer.getParent().requestFocus();
     }
@@ -88,9 +89,11 @@ public class Puzzle {
     }
 
     public void mischen() {
+
+        main.setSekundenNull();
         ArrayList<Integer> letzteRichtungen = new ArrayList<>();
         letzteRichtungen.clear();
-        for (int bewegungen = 0; bewegungen < 60; bewegungen++) {
+        for (int bewegungen = 0; bewegungen < 600; bewegungen++) {
             int randomRichtung = (int) (Math.random() * 4 + 1);
             letzteRichtungen.add(randomRichtung);
             switch (randomRichtung) {
