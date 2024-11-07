@@ -44,7 +44,12 @@ public class ButtonManager {
                 buttons.get(index).setFont(new Font("Elephant", 27));
                 buttons.get(index).setPrefWidth(Main.getQUADRAT_GROESSE());
                 buttons.get(index).setPrefHeight((Main.getQUADRAT_GROESSE()));
-                buttons.get(index).setStyle("-fx-background-color: #555555; -fx-text-fill: #00AAAA;");
+                buttons.get(index).setStyle("-fx-background-color: #555555; " + // Dunkelgrau
+                                            "-fx-text-fill: #00AAAA; " + // Cyan
+                                            "-fx-border-color: #888888 #444444 #222222 #666666; " + // Hellgrau, Mittelgrau, Dunkelgrau, Sehr Dunkelgrau
+                                            "-fx-border-width: 2px; " + // Breite des Rahmens
+                                            "-fx-border-style: solid; " + // Stil des Rahmens
+                                            "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 5, 0.5, 2, 2);"); // Effekt für "3d Rahmen"
                 gridPane.add(buttons.get(index),spalteAkt,reiheAkt);
             }
         }
