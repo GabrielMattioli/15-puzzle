@@ -131,11 +131,11 @@ public class Puzzle {
     // Timer
 
     public void startTimer() {
-        main.getTimeline().play();
+        timeline.play();
     }
 
     public void stopTimer() {
-        main.getTimeline().stop();
+        timeline.stop();
     }
 
     // Getters und Setters
