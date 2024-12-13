@@ -16,7 +16,7 @@ public class Puzzle {
     private String reihenfolgeRichtig;
     private String reihenfolgePruefen;
     private Main main;
-    
+
     public Puzzle(int gridGroesse, Main main) {
         this.gridGroesse = gridGroesse;
         this.buttons = new ArrayList<>();
@@ -48,6 +48,12 @@ public class Puzzle {
             String tempText = ausgewaehlterButton.getText();
             ausgewaehlterButton.setText(zielButton.getText());
             zielButton.setText(tempText);
+
+            // Tauscht die Hintergrundfarbe
+            String tempStyle = ausgewaehlterButton.getStyle();
+            ausgewaehlterButton.setStyle(zielButton.getStyle());
+            zielButton.setStyle(tempStyle);
+
             // Addiert 1 zu der Zähler
             zuegeZaehler++;
 
@@ -69,6 +75,12 @@ public class Puzzle {
             String buttonZahl = button.getText();
             button.setText(buttonLeer.getText());
             buttonLeer.setText(buttonZahl);
+
+            // Tauscht die Hintergrundfarbe
+            String tempStyle = button.getStyle();
+            button.setStyle(buttonLeer.getStyle());
+            buttonLeer.setStyle(tempStyle);
+
             buttonLeer = button;
             zuegeZaehler++;
         }

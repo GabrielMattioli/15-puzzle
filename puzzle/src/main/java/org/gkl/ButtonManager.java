@@ -26,10 +26,10 @@ public class ButtonManager {
         buttons.clear();
         for (int i = 0; i < gridgroesse * gridgroesse; i++) {
             Button button = new Button(Integer.toString(i + 1));
-            button.setOnAction(e -> {
+            button.setOnAction(e -> { // Event listener beim Klicken
                 puzzle.buttonBewegen(button);
                 main.benachrichtigen();
-            }); // Event listener beim Klicken
+            });
             buttons.add(button);
         }
     }
@@ -44,13 +44,28 @@ public class ButtonManager {
                 buttons.get(index).setFont(new Font("Elephant", 27));
                 buttons.get(index).setPrefWidth(Main.getQUADRAT_GROESSE());
                 buttons.get(index).setPrefHeight((Main.getQUADRAT_GROESSE()));
-                buttons.get(index).setStyle("-fx-background-color: #555555; " + // Dunkelgrau
-                                            "-fx-text-fill: #00AAAA; " + // Cyan
-                                            "-fx-border-color: #888888 #444444 #222222 #666666; " + // Hellgrau, Mittelgrau, Dunkelgrau, Sehr Dunkelgrau
-                                            "-fx-border-width: 2px; " + // Breite des Rahmens
-                                            "-fx-border-style: solid; " + // Stil des Rahmens
-                                            "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 5, 0.5, 2, 2);"); // Effekt für "3d Rahmen"
-                gridPane.add(buttons.get(index),spalteAkt,reiheAkt);
+
+                // Setzt die Hintergrundfarbe des letzten Buttons anders
+                String hintergrundFarbe = (index == gridgroesse * gridgroesse - 1) ? "#222222" : "#555555";
+
+                String buttonStyle = "-fx-background-color: " + hintergrundFarbe + "; " + // Hintergrundfarbe
+                        "-fx-text-fill: #00AAAA; "; // Cyan
+
+                // Wenn es der letzte Button ist, keine Rahmen
+                if (index == gridgroesse * gridgroesse - 1) {
+                    buttonStyle += ""; // Keine Rahmen
+                } else {
+                    buttonStyle += "-fx-border-color: #888888 #444444 #222222 #666666; " + // Hellgrau, Mittelgrau,
+                                                                                           // Dunkelgrau,
+                    // Sehr Dunkelgrau
+                            "-fx-border-width: 2px; " + // Breite des Rahmens
+                            "-fx-border-style: solid; "; // Stil des Rahmens
+                }
+
+                buttonStyle += "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 5, 0.5, 2, 2);"; // Effekt für "3d
+                // Rahmen"
+                buttons.get(index).setStyle(buttonStyle);
+                gridPane.add(buttons.get(index), spalteAkt, reiheAkt);
             }
         }
     }
